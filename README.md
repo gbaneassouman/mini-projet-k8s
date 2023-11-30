@@ -1,1 +1,1 @@
-# mini-projet-k8s
+# Mini-projet-k8s
