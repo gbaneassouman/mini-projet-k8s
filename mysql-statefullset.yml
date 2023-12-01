@@ -16,14 +16,15 @@ spec:
       labels:
         app: mysql
     spec:
+      securityContext: #
+      runAsUser: 1000  # Why
+      runAsGroup: 3000 #
+      fsGroup: 2000    # 
       containers:
       - name: mysql-server
         image: mysql:5.7
         args:
           - "--ignore-db-dir=lost+found"
-        envFrom:
-          - secretRef:
-              name: mysql-secret
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
@@ -45,6 +46,18 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: mysql-user
+        livenessProbe:
+          exec:
+            command: ["mysqladmin","ping"]
+          initialDelaySeconds: 30
+          periodySeconds: 5
+          timeoutSeconds: 1
+        readiness:
+          exec:
+            command: ["mysql","-h","127.0.0.1","-e","SELECT 1"]
+          initialDelaySeconds: 5
+          periodySeconds: 2
+          timeoutSeconds: 1
 
         ports:
         - containerPort: 3306
