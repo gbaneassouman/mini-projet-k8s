@@ -17,9 +17,9 @@ spec:
         app: mysql
     spec:
       securityContext: #
-      runAsUser: 1000  # Why
-      runAsGroup: 3000 #
-      fsGroup: 2000    # 
+        runAsUser: 1000  # Why
+        runAsGroup: 3000 #
+        fsGroup: 2000    # 
       containers:
       - name: mysql-server
         image: mysql:5.7
