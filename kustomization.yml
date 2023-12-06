@@ -1,0 +1,10 @@
+resources:
+  - wp-namespace.yml
+  - mysql-secret.yml
+  - mysql-pvc.yml
+  - mysql-sts.yml
+  - mysql-service.yml
+  - wp-pvc.yml
+  - wp-secret.yml
+  - wp-deployment.yml
+  - wp-svc.yml
