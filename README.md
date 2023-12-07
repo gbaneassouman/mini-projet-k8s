@@ -32,8 +32,14 @@ J'ai apporté un changement en ajoutant un **Namespace** pour cloisonner l'appli
 Comme environnement j'ai opté pour **Minikube et VirtualBox** pour la réalisation de ce projet.
 
 - Téléchargement et installation de **Minikube**
-'''
+```
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-'''
+```
+- Démarrage
+
+```
+minikube start --driver=virtualbox
+
+```
