@@ -16,4 +16,7 @@
 J'ai apporté un changement en ajoutant un **Namespace** pour cloisonner l'application WordPress (voir ci-dessous).
 
 ## Architecture 
-<div align="center"><img src="images/wp-mysql.png" height=150px></div>
+
+<div align="center"><img src="images/wp-k8s-31.png"></div>
+
+
