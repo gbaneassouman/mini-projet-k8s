@@ -20,3 +20,20 @@ J'ai apporté un changement en ajoutant un **Namespace** pour cloisonner l'appli
 <div align="center"><img src="images/wp-k8s-31.png"></div>
 
 
+## Tâches réalisées
+1 - Deploiement de l'environnement k8s
+2 - Ecriture des manifests necessaires au deploiemnt de **Wordpress**
+3 - Deploiement de **Wordpress**
+
+## Plan de Travail
+
+### 1 - Installation de l'environnement k8s
+
+Comme environnement j'ai opté pour **Minikube et VirtualBox** pour la réalisation de ce projet.
+
+- Téléchargement et installation de **Minikube**
+'''
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+'''
