@@ -36,13 +36,13 @@ Comme environnement j'ai opté pour **Minikube et VirtualBox** pour la réalisat
 mkdir Minikube && cd Minikube
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
-
 ```
 - Démarrage de Minikube et Test
 
 ```
 minikube start --driver=virtualbox
-
+```
+```
 gbane@dev-ops:~$ kubectl get pods --all-namespaces 
 NAMESPACE     NAME                               READY   STATUS      RESTARTS       AGE
 kube-system   coredns-5dd5756b68-6ttl7           0/1     Completed   6              3d
