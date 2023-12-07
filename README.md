@@ -42,8 +42,8 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 ```
 minikube start --driver=virtualbox
-kubectl get pods --all-namespaces
 
+gbane@dev-ops:~$ kubectl get pods --all-namespaces 
 NAMESPACE     NAME                               READY   STATUS      RESTARTS       AGE
 kube-system   coredns-5dd5756b68-6ttl7           0/1     Completed   6              3d
 kube-system   etcd-minikube                      0/1     Running     7 (84s ago)    3d
