@@ -33,13 +33,27 @@ Comme environnement j'ai opté pour **Minikube et VirtualBox** pour la réalisat
 
 - Téléchargement et installation de **Minikube**
 ```
+mkdir Minikube && cd Minikube
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 ```
-- Démarrage
+- Démarrage de Minikube et Test
 
 ```
 minikube start --driver=virtualbox
+kubectl get pods --all-namespaces
+
+NAMESPACE     NAME                               READY   STATUS      RESTARTS       AGE
+kube-system   coredns-5dd5756b68-6ttl7           0/1     Completed   6              3d
+kube-system   etcd-minikube                      0/1     Running     7 (84s ago)    3d
+kube-system   kube-apiserver-minikube            0/1     Running     7 (74s ago)    3d
+kube-system   kube-controller-manager-minikube   0/1     Running     7 (84s ago)    3d
+kube-system   kube-proxy-8f5np                   1/1     Running     7 (84s ago)    3d
+kube-system   kube-scheduler-minikube            0/1     Running     7 (84s ago)    3d
+kube-system   storage-provisioner                1/1     Running     14 (84s ago)   3d
 
 ```
+L'environnement étant deployé nous procedons à l'écriture de nos manifests
+
+### 2 - Ecriture des Manisfests
