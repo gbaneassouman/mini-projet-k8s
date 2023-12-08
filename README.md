@@ -18,7 +18,7 @@ J'ai apporté un changement en ajoutant un **Namespace** pour cloisonner l'appli
 
 ## Architecture 
 
-<div align="center"><img src="images/wp-k8s-31.png" width=790px></div>
+<div align="center"><img src="images/wp-k8s-31.png" width=1000px></div>
 
 ## Plan de Travail
 1 - Déploiement de l'environnement k8s
@@ -486,7 +486,7 @@ Comme on peut le constater le **port** attribué est **32640** qui en réalité 
 gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ minikube service wordpress -n wordpress --url
 http://192.168.59.100:32640
 ```
-<div align="center"><img src="images/wp.png" width=790px></div>
+<div align="center"><img src="images/wp.png" width=1000px></div>
 
 
-<div align="center"><img src="images/wp-page.png" width=790px></div>
+<div align="center"><img src="images/wp-page.png" width=1000px></div>
