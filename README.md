@@ -18,7 +18,7 @@ J'ai apporté un changement en ajoutant un **Namespace** pour cloisonner l'appli
 
 ## Architecture 
 
-<div align="center"><img src="images/wp-k8s-31.png" width=910px></div>
+<div align="center"><img src="images/wp-k8s-31.png" width=1000px></div>
 
 
 ## Tâches réalisées
