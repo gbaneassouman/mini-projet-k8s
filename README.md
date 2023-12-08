@@ -486,7 +486,7 @@ Comme on peut le constater le **port** attribué est **32640** qui en réalité 
 gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ minikube service wordpress -n wordpress --url
 http://192.168.59.100:32640
 ```
-<div align="center"><img src="images/wp.png" width=1000px></div>
-
+<div align="center"><img src="images/wp.png" width=1000px></div><br>
+<br><br>
 
 <div align="center"><img src="images/wp-page.png" width=1000px></div>
