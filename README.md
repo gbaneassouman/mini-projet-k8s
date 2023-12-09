@@ -18,7 +18,7 @@ J'ai apporté un changement en ajoutant un **Namespace** pour cloisonner l'appli
 
 ## Architecture 
 
-<div align="center"><img src="images/wp-k8s-31.jpeg" width=1000px></div>
+<div align="center"><img src="images/wp-k8s-31.jpg" width=1000px></div>
 
 ## Plan de Travail
 1 - Déploiement de l'environnement k8s
