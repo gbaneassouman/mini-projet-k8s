@@ -67,6 +67,7 @@ le cloisonnement a l'avantage:
 - d'organiser 
 - de gérer et secuiriser le cluster
 - etc
+
 Créons le fichier **wp-namespace.yml** et ajoutons le contenu ci-dessous
 
 - Création du fichier 
