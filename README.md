@@ -432,6 +432,8 @@ Voici quelques points à noter :
 
 2 - **replicas: 1** permettra de créer un seul Pod qui sera nommé sous le format **deployment-name-[a-z0-9]-[a-z0-9]** 
 
+3 - **type: Recreate** dans la partie **strategy** definit la stratégie de déploiement (ici en cas de mise à jour il termine l'ancienne version et deploi la nouvelle version). cette stratégie est idéale en environnement de dévéloppement.
+
 3 - **WORDPRESS_DB_HOST** ici on fournit le nom du service MySQL **mysql-svc** 
 
 4 - **WORDPRESS_DB_PASSWORD** est extrait de l'objet **Secret mysql-pass** à l'aide de la reférence **secretKeyRef**
