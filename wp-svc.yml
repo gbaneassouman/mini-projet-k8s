@@ -1,15 +1,14 @@
----
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name: wordpress-service
+  name: wordpress
+  namespace: wordpress
+  labels:
+    app: wordpress
 spec:
-  type: NodePort
+  ports:
+    - port: 80
   selector:
     app: wordpress
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 80
-      nodePort: 30007
+    tier: frontend
+  type: NodePort
