@@ -5,6 +5,5 @@ resources:
   - mysql-sts.yml
   - mysql-service.yml
   - wp-pvc.yml
-  - wp-secret.yml
   - wp-deployment.yml
   - wp-svc.yml

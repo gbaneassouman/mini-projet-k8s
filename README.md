@@ -1,7 +1,7 @@
   # Mini Projet Kubernetes
   <div align="center"><img src="images/wp_k8s.png"></div><br/>
 
-  Ce Projet denommé mini projet Kubernetes a été réalisé dans le cadre de ma formation **Devops** au **Bootcamp N°15 de EAZYTraining**  qui a durée 03 mois 
+  Ce Projet denommé mini projet Kubernetes a été réalisé dans le cadre de ma formation **Devops** du **Bootcamp N°15 de EAZYTraining**  d'une durée de 03 mois 
   
   ## Objectifs
 
@@ -9,7 +9,6 @@
 - Créer un objet Deployment pour MySQL avec un seul replicas 
 - Créer un objet Service de type **clusterIP** pour exposer le **MySQL**
 - Créer un objet Deployment avec un seul replicas pour **WordPress** avec les paramètres de connexion à **MySQL**
-- Les données de WordPress seront stockées dans le répertoire /data du Noeud
 - Créer un service de type **NodePort** pour exposer **WordPress**
 
 ## Get Started 🚀  
@@ -61,12 +60,12 @@ L'environnement étant deployé on peut procéder à l'écriture des manifests
 **1 - Namespace**
 
 Comme récommendé en environnement de Production  j'ai cloisonné les Pods dans un **Namespace** appelé **wordpress**.
-Le cloisonnement a l'avantage:
+le cloisonnement a l'avantage:
 - d'offrir des unités logiques
-- permet d'allouer des ressources
-- permet d'organiser 
+- de permettre l'allocation de ressources
+- d'organiser 
 - de gérer et secuiriser le cluster
-
+- etc
 Créons le fichier **wp-namespace.yml** et ajoutons le contenu ci-dessous
 
 - Création du fichier 
@@ -74,7 +73,7 @@ Créons le fichier **wp-namespace.yml** et ajoutons le contenu ci-dessous
 mkdir -p mini-projet-k8s && cd mini-projet-k8s
 touch wp-namespace.yml
 ```
-- Contenu du fichier
+- Contenu à ajouté au fichier
 ```
 ---
 apiVersion: v1
@@ -88,7 +87,7 @@ status:
 ```
 kubectl apply -f wp-namespace.yml
 ```
-vérification
+- vérification
 
 ```
 gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ kubectl get namespaces 
@@ -99,19 +98,19 @@ kube-public       Active   3d18h
 kube-system       Active   3d18h
 wordpress         Active   28m
 ```
-A partir de cet instant tous les objets seront crées dans le Namespace **wordpress** en ajoutant avec la variable **namespace: wordpress** dans le **metadata**
+A partir de cet instant tous nos objets seront crées dans le Namespace **wordpress** en ajoutant la variable **namespace: wordpress** dans le **metadata**
 
 **2 - Déploiment de MySQL**
 
 À l'instar de  **PostgreSQL**, **Oracle** et autres, **MySQL** est une application à état **(Stateful)** qui nécessite de stocker et suivre des données de façon permanente contrairement aux applications sans état **(Stateless)** comme **Nginx**.
 
-Supposons que nous voulons déployer une base de données **MySQL** dans le **cluster Kubernetes** avec trois **réplicas**. Lorsqu'une application frontale souhaite accéder au cluster MySQL pour lire et écrire des données. La demande de lecture sera transmise à trois pods. Cependant, la demande d'écriture ne sera transmise qu'au **premier Pod (principal)** et les données seront synchronisées avec les autres pods. 
+Supposons que nous voulons déployer une base de données **MySQL** dans le **cluster Kubernetes** avec trois **réplicas**. Lorsqu'une application frontale souhaite accéder au cluster MySQL pour lire et écrire des données. La demande de lecture sera transmise aux trois pods. Cependant, la demande d'écriture ne sera transmise qu'au **premier Pod (principal)** et les données seront synchronisées avec les autres pods. 
 
 **Pour y parvenir nous allons utiliser objet StatefulSets et non Deployment**
 
 La suppression ou la réduction d'un StatefulSet ne supprimera pas les volumes associés à l'application avec état. Cela nous assure la sécurité de nos données. Si on supprime le Pod MySQL ou si le Pod MySQL redémarre, nous aurons toujours accès aux données du même volume.
 
-Les applications qui se connectent à la base de données devront toujours se connecter au Pod qui joue le rôle principal afin de recevoir un accès en lecture-écriture, ce problème est résolu par le **StatefulSet** en attribuant à chaque pod une identité réseau prévisible et cohérente sous la forme ***<statefulset-name>-<pod-ordinal-index>*** à la différence du **Deployment** qui attribue des noms sous forme ***<deployment-name>-<index aléatoir>***.
+Les applications qui se connectent à la base de données devront toujours se connecter au Pod qui joue le rôle principal afin de recevoir un accès en lecture-écriture, ce problème est résolu par le **StatefulSet** en attribuant à chaque pod une identité réseau prévisible et cohérente sous la forme *<statefulset-name>-<pod-ordinal-index>* à la différence du **Deployment** qui attribue des noms sous forme *<deployment-name>-<index aléatoir>*.
 
 Exemple nos 3 replicas seront nommés comme ci-dessous:
 
@@ -121,7 +120,7 @@ Exemple nos 3 replicas seront nommés comme ci-dessous:
 
 Avant de créer un **StatefulSet** on doit d'abord provisionner un espace de stockage appelé **Volume** pour la persistence des données de notre Base de données.
 
-Pour ce faire on va créer un objet **PVC (PersistentVolumeClaim)** en se basant sur hle **HostPath Provisionner** qui est le **StorageClass** installé par défault sur notre cluster .
+Pour ce faire on va créer un objet **PVC (PersistentVolumeClaim)** en se basant sur le **HostPath Provisionner** qui est le **StorageClass** installé par défault sur notre cluster .
 
 
 **a - PVC PersistentVolumeClaim**
@@ -168,9 +167,9 @@ pvc-20e435d1-d691-4f0c-a96c-837169c240de   10Gi       RWO            Delete     
 
 **b - Secret**
 
-Maintenant que notre volume est crée , on va créer un objet de type secret pour stocker les paramètres de connexion **MySQL**. 
+Maintenant que notre volume est crée , on va créer un objet secret pour stocker les paramètres de connexion **MySQL**. 
 
-*(Dans un environnement de production il est recomendé d'utiliser **HashiCorp Vault)*** car les données de type secret sont faciles à décoder
+*(Dans un environnement de production il est plutôt recomendé d'utiliser **HashiCorp Vault)*** car les données de type secret sont faciles à décoder
 
 Créons le fichier mysql-secret.yml et son contenu, il faut noter que mots de passe doivent être au format **Base64** qu'on peut générer avec la commande ci-dessous
 
@@ -195,7 +194,7 @@ data:
   password: eW91cl9zZWN1cmVfcGFzc3dvcmQ=
   mysql-password: cGFzc3dvcmQ=
 ```
-créons et vérifions le secret
+- créons et vérifions le secret
 ```
 gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ kubectl apply -f mysql-secret.yml 
 secret/mysql-pass created
@@ -268,7 +267,7 @@ Voici quelques points à noter :
 
 1 - **kind: StatefulSet** démande à Kubernetes de créer une application MySQL avec les caractéristiques de **StatefulSet**
 
-2 - **replicas: 1** permettra de créer un seul Pod sera nommé sous le format <statefulset-name>-<pod-ordinal-index> donc **mysql-0**
+2 - **replicas: 1** permettra de créer un seul Pod sera nommé sous le format **statefulset-name-pod-ordinal-index* donc **mysql-0**
 
 3 - **image: mysql:8.0** on demande à kubernetes d'utiliser mysql:8.0 comme image pour l'installation **MySQL** 
 
@@ -294,9 +293,11 @@ gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ kubectl get -n wordpres
 NAME      READY   STATUS    RESTARTS   AGE
 mysql-0   1/1     Running   0          4m18s
 ```
+Comme on le constate notre Pod est nommé **mysql-0** , si on décide de scaler à 03 Pods les autres seront nommés **mysql-1** et **mysql-2**
+
 **d - Service mysql**
 
-Pour permettre la communication entre WordPress et MySQL , on va créer un service de type **clusterIP** qui exposera mysql seulement au niveau du cluster
+Pour permettre la communication entre WordPress et MySQL , on va créer un service de type **clusterIP** qui exposera mysql seulement au niveau du cluster.
 
 - création du fichier mysql-service.yml
 ```
@@ -426,11 +427,11 @@ spec:
 ```
 Voici quelques points à noter :
 
-1 - **kind: Deployment** démande à Kubernetes de créer une application WordPress avec les caractéristiques **Stateless**
+1 - **kind: Deployment** démande à Kubernetes de créer une application WordPress avec les caractéristiques **Stateless** , ce **Deployment** va engendrer un **replicaset** qui va s'assurer que le nombre pod souhaité avec l'option **(replicas: 1)** soit toujours présent
 
-2 - **replicas: 1** permettra de créer un seul Pod qui sera nommé sous le format <deployment-name>-<[a-z0-9]aléatoir> 
+2 - **replicas: 1** permettra de créer un seul Pod qui sera nommé sous le format **deployment-name-[a-z0-9]-[a-z0-9]** 
 
-3 - **WORDPRESS_DB_HOST** ici on fournit le nom du service MySQL **mysql-svc** car c'est elle le endpoint de MySQL
+3 - **WORDPRESS_DB_HOST** ici on fournit le nom du service MySQL **mysql-svc** 
 
 4 - **WORDPRESS_DB_PASSWORD** est extrait de l'objet **Secret mysql-pass** à l'aide de la reférence **secretKeyRef**
 
@@ -449,7 +450,7 @@ gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ kubectl get -n wordpres
 NAME        READY   UP-TO-DATE   AVAILABLE   AGE
 wordpress   1/1     1            1           107s
 ```
-- vérification du replicaset
+- vérification de la présence du replicaset
 ```
 gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ kubectl get -n wordpress rs
 NAME                   DESIRED   CURRENT   READY   AGE
@@ -526,6 +527,58 @@ replicaset.apps/wordpress-6f77d9cd7c   1         1         1       13h
 NAME                     READY   AGE
 statefulset.apps/mysql   1/1     14h
 ```
+## Rémarques
+Il faut noter qu'on aurait pû deployer nos manifests d'un seul avec un fichier **kustomization.yml** et déclarer les manifests dans l'ordre de deploiement. (voir ci-dessous)
+
+-  
+```
+touch kustomization.yml
+```
+ - contenu à mettre dans le fichier kustomization.yml
+```
+resources:
+  - wp-namespace.yml
+  - mysql-secret.yml
+  - mysql-pvc.yml
+  - mysql-sts.yml
+  - mysql-service.yml
+  - wp-pvc.yml
+  - wp-deployment.yml
+  - wp-svc.yml
+```
+- Déploiement avec kuztomization
+```
+gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ kubectl apply -k ./
+namespace/wordpress created
+secret/mysql-pass created
+service/mysql-svc created
+service/wordpress created
+persistentvolumeclaim/mysql-pvc created
+persistentvolumeclaim/wp-pvc created
+deployment.apps/wordpress created
+statefulset.apps/mysql created
+```
+- Résultat 
+```
+gbane@dev-ops:~/Bureau/Mini-Projets/K8S/mini-projet-k8s$ kubectl get all -n wordpress 
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/mysql-0                      1/1     Running   0          64s
+pod/wordpress-6f77d9cd7c-bbp9c   1/1     Running   0          64s
+
+NAME                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/mysql-svc   ClusterIP   10.104.73.82     <none>        3306/TCP       64s
+service/wordpress   NodePort    10.106.192.101   <none>        80:30390/TCP   64s
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/wordpress   1/1     1            1           64s
+
+NAME                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/wordpress-6f77d9cd7c   1         1         1       64s
+
+NAME                     READY   AGE
+statefulset.apps/mysql   1/1     64s
+```
+
 - Test de l'application via le Navigateur
 
 - Déterminons l'Url de l'application
@@ -537,3 +590,7 @@ http://192.168.59.100:32640
 <br><br>
 
 <div align="center"><img src="images/wp-page.png" width=1000px></div>
+
+## Conclusion
+Ce Mini projet a été très enrichissant car il m'a permit de mettre en oeuvre un cas patrique et approfondir mes connaissances. 
+Ce fut aussi l'occasion de nouvelles decouvertes et d'une meilleure compréhension de l'environnement kubernetes .
