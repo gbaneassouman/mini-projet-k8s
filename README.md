@@ -1,7 +1,7 @@
   # Mini Projet Kubernetes
   <div align="center"><img src="images/wp_k8s.png"></div><br/>
 
-  Ce Projet denommé mini projet Kubernetes a été réalisé dans le cadre de ma formation **Devops** du **Bootcamp N°15 de EAZYTraining**  d'une durée de 03 mois 
+  Ce Projet denommé mini projet Kubernetes a été réalisé dans le cadre de ma formation **Devops** durant le **Bootcamp N°15 de EAZYTraining**  d'une durée de 03 mois 
   
   ## Objectifs
 
@@ -9,6 +9,7 @@
 - Créer un objet Deployment pour MySQL avec un seul replicas 
 - Créer un objet Service de type **clusterIP** pour exposer le **MySQL**
 - Créer un objet Deployment avec un seul replicas pour **WordPress** avec les paramètres de connexion à **MySQL**
+- Créer un volume pour Wordpress 
 - Créer un service de type **NodePort** pour exposer **WordPress**
 
 ## Get Started 🚀  
@@ -110,9 +111,9 @@ Supposons que nous voulons déployer une base de données **MySQL** dans le **cl
 
 La suppression ou la réduction d'un StatefulSet ne supprimera pas les volumes associés à l'application avec état. Cela nous assure la sécurité de nos données. Si on supprime le Pod MySQL ou si le Pod MySQL redémarre, nous aurons toujours accès aux données du même volume.
 
-Les applications qui se connectent à la base de données devront toujours se connecter au Pod qui joue le rôle principal afin de recevoir un accès en lecture-écriture, ce problème est résolu par le **StatefulSet** en attribuant à chaque pod une identité réseau prévisible et cohérente sous la forme *<statefulset-name>-<pod-ordinal-index>* à la différence du **Deployment** qui attribue des noms sous forme *<deployment-name>-<index aléatoir>*.
+Les applications qui se connectent à la base de données devront toujours se connecter au Pod qui joue le rôle principal afin de recevoir un accès en lecture-écriture, ce problème est résolu par le **StatefulSet** en attribuant à chaque pod une identité réseau prévisible et cohérente sous la forme *statefulset-name-pod-ordinal-index* à la différence du **Deployment** qui attribue des noms sous forme *deployment-name-index aléatoir*.
 
-Exemple nos 3 replicas seront nommés comme ci-dessous:
+Exemple: nos 3 replicas seront nommés comme ci-dessous:
 
 - ```mysql-0``` - Premier Pod, avec le rôle primary
 - ```mysql-1``` - replica en Lecture-seule
@@ -169,7 +170,7 @@ pvc-20e435d1-d691-4f0c-a96c-837169c240de   10Gi       RWO            Delete     
 
 Maintenant que notre volume est crée , on va créer un objet secret pour stocker les paramètres de connexion **MySQL**. 
 
-*(Dans un environnement de production il est plutôt recomendé d'utiliser **HashiCorp Vault)*** car les données de type secret sont faciles à décoder
+*(Dans un environnement de production il est plutôt recomendé d'utiliser **HashiCorp Vault** car les données de type secret sont faciles à décoder)*
 
 Créons le fichier mysql-secret.yml et son contenu, il faut noter que mots de passe doivent être au format **Base64** qu'on peut générer avec la commande ci-dessous
 
@@ -528,9 +529,10 @@ NAME                     READY   AGE
 statefulset.apps/mysql   1/1     14h
 ```
 ## Rémarques
-Il faut noter qu'on aurait pû deployer nos manifests d'un seul avec un fichier **kustomization.yml** et déclarer les manifests dans l'ordre de deploiement. (voir ci-dessous)
+Il faut noter qu'on peut deployer nos manifests d'un seul coup avec un fichier **kustomization.yml** et déclarer les manifests dans l'ordre de deploiement. (voir ci-dessous)
 
--  
+## Déploiement avec kuztomization
+- création du fichier kuztomization
 ```
 touch kustomization.yml
 ```
